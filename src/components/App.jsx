@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { GlobalStyle } from './GlobalStyle';
 import { Layout } from './Layout/Layout';
@@ -8,15 +8,15 @@ import { Filter } from './Filter/Filter';
 import { Title } from './Title/Title.styled';
 
 
-const initialContacts = [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-]
+// const initialContacts = [
+//       { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+//       { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+//       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+//       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+// ]
 
 export const  App  = () => {
-  const [contacts, setContacts] = useState(initialContacts);
+  const [contacts, setContacts] = useState(() => JSON.parse(window.localStorage.getItem('contacts')) ?? []);
   // const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
 
@@ -41,16 +41,14 @@ export const  App  = () => {
       };
 
       setContacts((prevContacts) => [...prevContacts, newContact]);
-      // setContacts((prevContacts)=>{
-      //    [...prevContacts,newContact]});
+     
     }
   };
 
-  // ({ contacts }) => ({
-  //   contacts: [...contacts, contact],
-  // })
+ 
   const changeFilter = e => {
-    setFilter({ filter: e.currentTarget.value });
+    setFilter(e.currentTarget.value);
+    
   };
 
  const  getFilteredContacts = () => {
@@ -62,11 +60,15 @@ export const  App  = () => {
   };
 
   const deleteContact = contactId => {
-    setContacts(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
-  };
+    setContacts(prevContacts => prevContacts.filter(contact => contact.id !== contactId));
+  }
 
+  
+
+  useEffect(()=>{
+   
+       window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  },[contacts])
   
     // const filteredContacts = this.getFilteredContacts();
 

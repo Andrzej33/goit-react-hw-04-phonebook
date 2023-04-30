@@ -29,19 +29,10 @@ export const ContactForm = ({onAdd}) => {
 
   
 
-  // handleChange = e => {
-  //   const { name, value } = e.currentTarget;
-  //   this.setState({
-  //     [name]: value,
-  //   });
-  // };
 
  
 
-//  const handleSubmit=(values,{resetForm}) =>{
-//   console.log(values);
-// resetForm()
-//  }
+
 
 const handleSubmit =(values,actions) =>{
   onAdd(values);
